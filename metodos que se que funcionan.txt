@@ -1,0 +1,118 @@
+//FUnciones que sé que funcionan
+
+	// Dificultad
+	public static int menuModoJuego(Scanner sc) {
+		int opcion = 0;
+		System.out.println(
+				"Elige el nivel de dificultad: \nNivel 1 (fácil): 10 barcos + 50 intentos \nNivel 2 (medio): 5 barcos + 30 intentos \nNivel 3 (difícil): 2 barcos + 10 intentos \nNivel 4: dificultad personalizada");
+		opcion = sc.nextInt();
+
+		while (opcion != 1 && opcion != 2 && opcion != 3 && opcion != 4) {
+			System.out.println("Elige nivel de dificultad: 1, 2, 3 o 4.");
+			opcion = sc.nextInt();
+		}
+	
+		return opcion;
+	}
+	
+
+	// Tablero Base 0 al 9 y de A a J
+	public static char[][] crearTablero(int filas, int columnas) {
+		char tablero[][] = new char[filas][columnas];
+
+		for (int i = 0; i < tablero.length; i++) {
+			for (int j = 0; j < tablero[i].length; j++) {
+				tablero[i][j] = '-';
+			}
+		}
+		tablero[0][0] = ' ';
+
+		for (int i = 1; i <= 10; i++) {
+			tablero[i][0] = (char) ('A' + i - 1);
+		}
+		for (int j = 1; j <= 10; j++) {
+			tablero[0][j] = (char) ('0' + (j - 1));
+
+		}
+		return tablero;
+	}
+
+	// Mostrar Tablero Completo (visible + oculto)
+	public static void mostrarTableroCompleto(char[][] tablero) {
+		System.out.println("TABLERO CON BARCOS GENERADOS");
+
+		for (int i = 0; i < tablero.length; i++) {
+			for (int j = 0; j < tablero[i].length; j++) {
+				System.out.print(tablero[i][j] + " ");
+			}
+			System.out.println();
+		}
+	}
+	
+		// Comprueba si es posible insertar una lancha en la coordenada (f,c) del
+	// tablero
+	public static boolean comprobarInsertarLancha(char[][] tablero, int fila, int columna) {
+		if (tablero[fila][columna] != '-') {
+			return false;
+		}
+		return true;
+	}
+
+	// Inserta una lancha en una posición aleatoria del tablero
+	// Lancha (L): ocupa una casilla del tablero.
+	public static void insertarLancha(char[][] tablero) {
+		int fila;
+		int columna;
+		do {
+			fila = 1 + (int) (Math.random() * 10);
+			columna = 1 + (int) (Math.random() * 10);
+		} while (!comprobarInsertarLancha(tablero, fila, columna));
+		tablero[fila][columna] = 'L';
+	}
+
+	// Comprueba si es posible insertar un buque en la coordenada (f,c) del tablero
+	public static boolean comprobarInsertarBuque(char[][] tablero, int fila, int columna) {
+
+		if (columna + 2 >= tablero[0].length) { // controla que no se salga del array
+			return false;
+		}
+
+		for (int i = 0; i < 3; i++) {
+			if (tablero[fila][columna + i] != '-') {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	// Inserta un buque en una posición aleatoria del tablero (si cabe)
+	// Buque (B):ocupa 3 casillas horizontales consecutivas del tablero
+
+	public static void insertarBuque(char[][] tablero) {
+		int fila;
+		int columna;
+		boolean insertado = false;
+
+		while (!insertado) {
+
+			fila = 1 + (int) (Math.random() * 10);
+			columna = 1 + (int) (Math.random() * 8);
+
+			if (comprobarInsertarBuque(tablero, fila, columna)) {
+				for (int i = 0; i < 3; i++) {
+					tablero[fila][columna + i] = 'B';
+				}
+
+				insertado = true;
+			}
+
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
